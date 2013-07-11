@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>Enable Two Step Authentication</h2>
+
+<div>Type this code into you mobile app: @ViewBag.Secret</div>
+<div>Or scan this code:<br /><img src="@Html.Raw(ViewBag.QrCode)" /></div>
+<form id="codeForm1">
+<label>To complete the process type the code from your mobile app:
+<input type="text" id="code" /></label>
+<input type="submit" value="Enable Two Step Authentication" />
+</form>
+
+
+<script type="text/javascript" language="javascript">
+    $("#codeForm1").submit(function () {
+        $.ajax("/Home/EnableTwoStepAjax", {
+            type: "POST",
+            data: {
+                'code': $("#code").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.result == "fail") alert("incorrect code, please try again");
+                if (data.result == "success") window.location = "/";
+            },
+            error: function (dc1, dc2, txt) { alert(txt); }
+        });
+        return false;
+    });
+</script>

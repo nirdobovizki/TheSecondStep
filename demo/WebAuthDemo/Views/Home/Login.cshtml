@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+
+<div>
+    <div>
+        <form id="loginForm">
+            <label>User Name: <input type="text" id="userName" /></label>
+            <label>Password: <input type="password" id="password" /></label>
+            <input type="submit" value="Log In" />
+            <div>Use username <span style="font-style:italic">demo</span> and password <span style="font-style:italic">demo</span></div>
+        </form>
+        <form id="stepTwo" style="display:none">
+            <label>Authenticator code: <input type="text" id="code" /></label>
+            <input type="submit" value="Log In" />
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" language="javascript">
+    $("#loginForm").submit(function () {
+        $.ajax("/Home/LoginAjax", {
+            type: "POST",
+            data: {
+                'userName': $("#userName").val(),
+                'password': $("#password").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.result == "fail") alert("bad user name or password");
+                if (data.result == "success") window.location = "/";
+                if (data.result == "twostep") {
+                    $("#loginForm").hide();
+                    $("#stepTwo").show();
+                }
+            },
+            error: function (dc1, dc2, txt) { alert(txt); }
+        });
+        return false;
+    });
+    $("#stepTwo").submit(function () {
+        $.ajax("/Home/LoginStepTwoAjax", {
+            type: "POST",
+            data: {
+                'fallback': false,
+                'code': $("#code").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.result == "fail") alert("bad auth code");
+                if (data.result == "success") window.location = "/";
+            },
+            error: function (dc1, dc2, txt) { alert(txt); }
+        });
+        return false;
+    });
+</script>

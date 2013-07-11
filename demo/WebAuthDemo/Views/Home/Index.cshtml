@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>User Profile</h2>
+
+Name: demo</br>
+Two Step Authentication: @if (ViewBag.User.TwoFactorAuthEnabled)
+                         { <span>Enabled</span> }
+                         else
+                         { <span>Disabled <a href="/Home/EnableTwoStep">[Enable]</a></span>}<br />
+<a href="/Home/Logout">[Logout]</a>
+@if (ViewBag.User.TwoFactorAuthEnabled)
+                         { <b>Log out and log back in to see two step authentication in action</b> }
