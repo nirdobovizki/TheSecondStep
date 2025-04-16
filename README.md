@@ -1,5 +1,6 @@
 TheSecondStep - Two factor authentication for .net
 =============
+This project is no longer actively maintained, use at your own risk.
 
 Supported Authentication methods
 ---
